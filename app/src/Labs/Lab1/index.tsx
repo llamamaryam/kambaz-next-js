@@ -43,35 +43,35 @@ export default function Lab1() {
             <li>Serve and enjoy!</li>
             </ol>
 
-            My favorite recipe (Shin Ramyun Noodle Soup):
+            My favorite recipe (Chocolate Chip Cookies):
             <ol id="wd-your-favorite-recipe">
-            <li>Put some water to boil.</li>
-            <li>Open the ramne bag and add the vegetables.</li>
-            <li>After it start boiling add the first half od the seasoning.</li>
-            <li>Add the noodles.</li>
-            <li>Pour the rest of the seasoning.</li>
-            <li>stir occasionally for five minutes.</li>
-            <li>Drain soup and put noodles in a bowl.</li>
-            <li>Enjoy c:</li>
+            <li>Preheat oven to 375°F.</li>
+            <li>Mix butter and sugar together.</li>
+            <li>Add eggs and vanilla extract.</li>
+            <li>In separate bowl, combine flour, baking soda, and salt.</li>
+            <li>Mix dry ingredients with butter mixture.</li>
+            <li>Fold in chocolate chips.</li>
+            <li>Drop spoonfuls onto baking sheet.</li>
+            <li>Bake for 9-11 minutes until golden.</li>
             </ol>
         </div>
         
         <h5>Unordered List Tag</h5>
         My favorite books (in no particular order)
         <ul id="wd-my-books">
-            <li>Dune</li>
-            <li>Lord of the Rings</li>
-            <li>Ender's Game</li>
-            <li>Red Mars</li>
-            <li>The Forever War</li>
+            <li>Project Hail Mary</li>
+            <li>The Midnight Library</li>
+            <li>Mistborn</li>
+            <li>Atomic Habits</li>
+            <li>Good to Great</li>
         </ul>
         Your favorite books (in no particular order)
         <ul id="wd-your-books">
-            <li>The night circus</li>
-            <li>The Maze Runner saga</li>
-            <li>A song of ice and fire saga</li>
-            <li>Get out of my dreams</li>
-            <li>Surely You're Joking, Mr. Feynman!</li>
+            <li>Six of Crows</li>
+            <li>The Poppy War</li>
+            <li>The Bone Shard Daughter</li>
+            <li>Piranesi</li>
+            <li>Ninth House</li>
         </ul>
         <div id="wd-tables">
             <h4>Table Tag</h4>
