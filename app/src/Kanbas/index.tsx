@@ -1,4 +1,5 @@
 "use client";
+import "./styles.css";
 import { Routes, Route, Navigate } from "react-router";
 import Account from "./Account/index";
 import Dashboard from "./Dashboard/index";
