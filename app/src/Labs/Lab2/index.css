@@ -221,4 +221,28 @@ p#wd-id-selector-2 {
 #wd-css-responsive-tables{
     color: blue
 }
+/* Media Queries demo styles */
+.wd-media-box{
+        padding: 16px;
+        background: lightgray;
+        color: black;
+        text-align: center;
+        margin: 10px 0;
+}
+.wd-media-list-item{
+        background: white;
+        margin: 6px 0;
+        padding: 8px;
+}
+
+@media (min-width: 576px) {
+    .wd-media-box{ background: #dbeafe; }
+}
+@media (min-width: 768px) {
+    .wd-media-box{ background: #bfdbfe; }
+    .wd-media-list-item{ display: inline-block; width: 30%; margin-right: 2%; }
+}
+@media (min-width: 992px) {
+    .wd-media-box{ background: #93c5fd; }
+}
   

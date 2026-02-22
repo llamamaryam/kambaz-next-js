@@ -11,6 +11,7 @@ import Float from "./Float";
 import GridLayout from "./GridLayout";
 import Flex from "./Flex";
 import ReactIconsSampler from "./ReactIcons";
+import MediaQueries from "./MediaQueries";
 import BootstrapGrids from "./BootstrapGrids";
 import ScreenSizeLabel from "./ScreenSizeLabel";
 import BootstrapTables from "./BootstrapTables";
@@ -81,6 +82,7 @@ export default function Lab2() {
       <GridLayout />
       <Flex />
       <ReactIconsSampler />
+      <MediaQueries />
       <BootstrapGrids />
       <ScreenSizeLabel />
       <BootstrapTables />
