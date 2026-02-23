@@ -1,20 +1,23 @@
 "use client";
-import CoursesNavigation from "./Navigation";
-import { Navigate, Route, Routes } from "react-router";
+import CourseNavigation from "./CourseNavigation";
+import { Navigate, Route, Routes, useParams } from "react-router";
 import Modules from "./Modules";
 import Home from "./Home";
 import Assignments from "./Assignments";
 import AssignmentEditor from "./Assignments/Editor";
 import PeopleTable from "./People/Table";
+import { courses } from "../data";
 export default function Courses() {
+    const { cid } = useParams();
+    const course = courses.find(c => c.id === cid);
     return (
       <div id="wd-courses">
-        <h2>Course 1234</h2>
+        <h2>{course ? course.name : `Course ${cid}`}</h2>
         <hr />
         <table>
             <tr>
             <td valign="top">
-                <CoursesNavigation />
+                <CourseNavigation />
             </td>
             <td valign="top">
                 <Routes>
@@ -29,4 +32,5 @@ export default function Courses() {
             </tr>
         </table>
       </div>
-  );}
+  );
+}
