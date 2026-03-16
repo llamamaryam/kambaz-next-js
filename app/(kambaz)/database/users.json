@@ -1,0 +1,72 @@
+[
+  {
+    "_id": "123",
+    "firstName": "Ada",
+    "lastName": "Lovelace",
+    "loginId": "adal",
+    "section": "S101",
+    "role": "STUDENT",
+    "lastActivity": "2026-03-15",
+    "totalActivity": "12:45:18"
+  },
+  {
+    "_id": "234",
+    "firstName": "Alan",
+    "lastName": "Turing",
+    "loginId": "alant",
+    "section": "S102",
+    "role": "STUDENT",
+    "lastActivity": "2026-03-14",
+    "totalActivity": "10:12:03"
+  },
+  {
+    "_id": "345",
+    "firstName": "Grace",
+    "lastName": "Hopper",
+    "loginId": "graceh",
+    "section": "S101",
+    "role": "TA",
+    "lastActivity": "2026-03-16",
+    "totalActivity": "23:20:40"
+  },
+  {
+    "_id": "456",
+    "firstName": "Katherine",
+    "lastName": "Johnson",
+    "loginId": "katj",
+    "section": "S103",
+    "role": "STUDENT",
+    "lastActivity": "2026-03-13",
+    "totalActivity": "08:42:57"
+  },
+  {
+    "_id": "567",
+    "firstName": "Margaret",
+    "lastName": "Hamilton",
+    "loginId": "margh",
+    "section": "S101",
+    "role": "FACULTY",
+    "lastActivity": "2026-03-16",
+    "totalActivity": "30:01:22"
+  },
+  {
+    "_id": "789",
+    "firstName": "Tim",
+    "lastName": "Berners-Lee",
+    "loginId": "timbl",
+    "section": "S104",
+    "role": "STUDENT",
+    "lastActivity": "2026-03-12",
+    "totalActivity": "05:18:44"
+  },
+  {
+    "_id": "890",
+    "firstName": "Linus",
+    "lastName": "Torvalds",
+    "loginId": "linust",
+    "section": "S104",
+    "role": "TA",
+    "lastActivity": "2026-03-15",
+    "totalActivity": "14:03:29"
+  }
+]

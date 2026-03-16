@@ -1,0 +1,38 @@
+[
+  {
+    "id": "a1",
+    "course": "1234",
+    "title": "A1",
+    "availableFrom": "2026-05-06",
+    "availableUntil": "2026-05-13",
+    "due": "2026-05-13",
+    "points": 100
+  },
+  {
+    "id": "a2",
+    "course": "1234",
+    "title": "A2",
+    "availableFrom": "2026-05-13",
+    "availableUntil": "2026-05-20",
+    "due": "2026-05-20",
+    "points": 100
+  },
+  {
+    "id": "a3",
+    "course": "1234",
+    "title": "A3",
+    "availableFrom": "2026-05-20",
+    "availableUntil": "2026-05-27",
+    "due": "2026-05-27",
+    "points": 100
+  },
+  {
+    "id": "a4",
+    "course": "101",
+    "title": "HW 1",
+    "availableFrom": "2026-03-01",
+    "availableUntil": "2026-03-05",
+    "due": "2026-03-05",
+    "points": 50
+  }
+]

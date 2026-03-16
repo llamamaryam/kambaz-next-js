@@ -1,0 +1,20 @@
+[
+  {
+    "id": "m1",
+    "course": "1234",
+    "name": "Week 1, Lecture 1 - Course Introduction",
+    "lessons": ["LEARNING OBJECTIVES", "READING", "SLIDES"]
+  },
+  {
+    "id": "m2",
+    "course": "1234",
+    "name": "Week 1, Lecture 2 - Formatting with HTML",
+    "lessons": ["LEARNING OBJECTIVES", "SLIDES"]
+  },
+  {
+    "id": "m3",
+    "course": "101",
+    "name": "Week 1 - Environment Setup",
+    "lessons": ["Install Node", "Install VS Code", "Create Project"]
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "id": "1234",
+    "name": "CS4550 Web Development",
+    "number": "CS4550",
+    "semester": "Spring 2026",
+    "color": "#0074D9"
+  },
+  {
+    "id": "101",
+    "name": "CS5610 Web Development Tools",
+    "number": "CS5610",
+    "semester": "Spring 2026",
+    "color": "#FF4136"
+  }
+]

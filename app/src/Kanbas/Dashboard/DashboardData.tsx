@@ -12,11 +12,17 @@ export default function DashboardData() {
       </div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 16 }}>
         {courses.map(course => (
-          <div key={course.id} style={{ background: course.color, color: "#fff", padding: 16, borderRadius: 8, minWidth: 200 }}>
-            <h4>{course.name}</h4>
-            <div>{course.number}</div>
-            <div>{course.semester}</div>
-          </div>
+          <Link
+            key={course.id}
+            to={`/Kanbas/Courses/${course.id}`}
+            style={{ textDecoration: "none" }}
+          >
+            <div style={{ background: course.color, color: "#fff", padding: 16, borderRadius: 8, minWidth: 200 }}>
+              <h4>{course.name}</h4>
+              <div>{course.number}</div>
+              <div>{course.semester}</div>
+            </div>
+          </Link>
         ))}
       </div>
     </div>

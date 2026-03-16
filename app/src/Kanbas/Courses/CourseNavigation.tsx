@@ -3,7 +3,11 @@ import { Link, useParams, useLocation } from "react-router-dom";
 const navItems = [
   { label: "Home", path: "Home" },
   { label: "Modules", path: "Modules" },
+  { label: "Piazza", path: "Piazza" },
+  { label: "Zoom", path: "Zoom" },
   { label: "Assignments", path: "Assignments" },
+  { label: "Quizzes", path: "Quizzes" },
+  { label: "Grades", path: "Grades" },
   { label: "People", path: "People" },
 ];
 

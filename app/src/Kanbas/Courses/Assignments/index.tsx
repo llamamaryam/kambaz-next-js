@@ -1,12 +1,18 @@
 "use client";
+import { Link } from "react-router-dom";
+import { useParams } from "react-router";
 import { BsGripVertical } from "react-icons/bs";
 import AssignmentsControls from "./AssignmentsControls";
 import AssignmentHeadControlButtons from "./AssignmentHeadControlButtons";
 import { IoMdArrowDropdown } from "react-icons/io";
 import LessonControlButtons from "../Modules/LessonControlButtons";
 import { GoChecklist } from "react-icons/go";
+import { assignments } from "../../data";
 
 export default function Assignments() {
+  const { cid } = useParams();
+  const courseAssignments = assignments.filter((assignment) => assignment.course === cid);
+
   return (
     <div id="wd-assignments">
       <AssignmentsControls /> <br /> <br />
@@ -19,54 +25,28 @@ export default function Assignments() {
             <AssignmentHeadControlButtons />
           </div>
           <ul className="wd-lessons list-group rounded-0">
-            <li className="wd-assignment-lesson list-group-item p-3 ps-1">
-              <BsGripVertical className="fs-3" />
-              <GoChecklist className="fs-3" style={{ color: "green" }} />
-              <div>
-                <a className="m-0 text-dark decoration-none"
-                  href="#/Kanbas/Courses/1234/Assignments/123"><b>A1</b></a>
-                <div className="flex-auto">
-                  <p className="m-0 text-danger pe-1">Multiple Modules</p>
-                  <p className="m-0">| <b>Not available until</b> May 6 at 12:00am |</p>
+            {courseAssignments.map((assignment) => (
+              <li key={assignment.id} className="wd-assignment-lesson list-group-item p-3 ps-1">
+                <BsGripVertical className="fs-3" />
+                <GoChecklist className="fs-3" style={{ color: "green" }} />
+                <div>
+                  <Link
+                    className="m-0 text-dark decoration-none"
+                    to={`/Kanbas/Courses/${cid}/Assignments/${assignment.id}`}
+                  >
+                    <b>{assignment.title}</b>
+                  </Link>
+                  <div className="flex-auto">
+                    <p className="m-0 text-danger pe-1">Multiple Modules</p>
+                    <p className="m-0">| <b>Not available until</b> {assignment.availableFrom} |</p>
+                  </div>
+                  <p className="m-0"><b>Due</b> {assignment.due} | {assignment.points}pt</p>
                 </div>
-                <p className="m-0"><b>Due</b> May 13 at 11:59pm | 100pt</p>
-              </div>
-              <div className="ml-auto">
-                <LessonControlButtons />
-              </div>
-            </li>
-            <li className="wd-assignment-lesson list-group-item p-3 ps-1">
-              <BsGripVertical className="fs-3" />
-              <GoChecklist className="fs-3" style={{ color: "green" }} />
-              <div>
-                <a className="m-0 text-dark decoration-none"
-                  href="#/Kanbas/Courses/1234/Assignments/123"><b>A2</b></a>
-                <div className="flex-auto">
-                  <p className="m-0 text-danger pe-1">Multiple Modules</p>
-                  <p className="m-0">| <b>Not available until</b> May 13 at 12:00am |</p>
+                <div className="ml-auto">
+                  <LessonControlButtons />
                 </div>
-                <p className="m-0"><b>Due</b> May 20 at 11:59pm | 100pt</p>
-              </div>
-              <div className="ml-auto">
-                <LessonControlButtons />
-              </div>
-            </li>
-            <li className="wd-assignment-lesson list-group-item p-3 ps-1">
-              <BsGripVertical className="fs-3" />
-              <GoChecklist className="fs-3" style={{ color: "green" }} />
-              <div>
-                <a className="m-0 text-dark decoration-none"
-                  href="#/Kanbas/Courses/1234/Assignments/123"><b>A3</b></a>
-                <div className="flex-auto">
-                  <p className="m-0 text-danger pe-1">Multiple Modules</p>
-                  <p className="m-0">| <b>Not available until</b> May 20 at 12:00am |</p>
-                </div>
-                <p className="m-0"><b>Due</b> May 27 at 11:59pm | 100pt</p>
-              </div>
-              <div className="ml-auto">
-                <LessonControlButtons />
-              </div>
-            </li>
+              </li>
+            ))}
           </ul>
         </li>
       </ul>

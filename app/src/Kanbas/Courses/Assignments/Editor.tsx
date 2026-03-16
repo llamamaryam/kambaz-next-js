@@ -1,20 +1,22 @@
 "use client";
+import { useParams } from "react-router";
+import { assignments } from "../../data";
+
 export default function AssignmentEditor() {
+    const { cid, aid } = useParams();
+    const assignment = assignments.find(
+        (currentAssignment) => currentAssignment.course === cid && currentAssignment.id === aid
+    );
+
+    if (!assignment) {
+        return <div id="wd-assignments-editor">Assignment not found.</div>;
+    }
+
   return (
     <div id="wd-assignments-editor">
       <label htmlFor="wd-name">Assignment Name</label>
-      <input id="wd-name" value="A1 - ENV + HTML" /><br /><br />
-      <textarea id="wd-description">
-        The assignment is available online Submit a 
-        link to the landing page of your Web 
-        application running on Netlify. The landing 
-        page should include the following: Your full 
-        name and section Links to each of the lab 
-        assignments Link to the Kanbas application 
-        Links to all relevant source code repositories 
-        The Kanbas application should include a link 
-        to navigate back to the landing page.
-      </textarea>
+            <input id="wd-name" defaultValue={assignment.title} /><br /><br />
+            <textarea id="wd-description" defaultValue={`${assignment.title} for course ${cid}.`} />
       <br />
       <table>
         <tr>
@@ -23,7 +25,7 @@ export default function AssignmentEditor() {
           </td>
          
           <td>
-            <input id="wd-points" value={100} />
+                        <input id="wd-points" defaultValue={assignment.points} />
           </td>
         </tr>
         <tr>
@@ -83,20 +85,20 @@ export default function AssignmentEditor() {
                     <label htmlFor="wd-due-date">Due</label><br/>
                     <input type="date"
                     id="wd-due-date"
-                    defaultValue="2024-05-13"/><br/>
+                    defaultValue={assignment.due}/><br/>
                 </td><br/>
 
                 <td align="left" valign="top">
                     <label htmlFor="wd-available-from">Available from</label><br/>
                     <input type="date"
                     id="wd-available-from"
-                    defaultValue="2024-05-06"/><br/>
+                    defaultValue={assignment.availableFrom}/><br/>
                 </td>
                 <td align="left" valign="top">
                     <label htmlFor="wd-available-until">Until</label><br/>
                     <input type="date"
                     id="wd-available-until"
-                    defaultValue="2024-05-20"/><br/>
+                    defaultValue={assignment.availableUntil}/><br/>
                 </td><br/>
                 <hr />
                 <button>Save</button>

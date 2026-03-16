@@ -1,0 +1,162 @@
+[
+  {
+    "_id": "A101",
+    "course": "RS101",
+    "title": "A1 - Rocket Equation",
+    "description": "Solve staged rocket mass-fraction problems using Tsiolkovsky's equation.",
+    "availableFrom": "2023-01-10",
+    "availableUntil": "2023-01-24",
+    "due": "2023-01-24",
+    "points": 100
+  },
+  {
+    "_id": "A102",
+    "course": "RS101",
+    "title": "A2 - Nozzle Performance",
+    "description": "Analyze nozzle geometry and estimate thrust coefficients for varying pressure ratios.",
+    "availableFrom": "2023-01-25",
+    "availableUntil": "2023-02-08",
+    "due": "2023-02-08",
+    "points": 100
+  },
+  {
+    "_id": "A201",
+    "course": "RS102",
+    "title": "A1 - Lift and Drag Lab",
+    "description": "Use wind tunnel data to estimate lift/drag curves for selected airfoils.",
+    "availableFrom": "2023-01-10",
+    "availableUntil": "2023-01-28",
+    "due": "2023-01-28",
+    "points": 90
+  },
+  {
+    "_id": "A202",
+    "course": "RS102",
+    "title": "A2 - Stall Analysis",
+    "description": "Model stall onset for finite wings and compare with published reference data.",
+    "availableFrom": "2023-01-29",
+    "availableUntil": "2023-02-12",
+    "due": "2023-02-12",
+    "points": 90
+  },
+  {
+    "_id": "A301",
+    "course": "RS103",
+    "title": "A1 - Mission Trade Study",
+    "description": "Compare at least three spacecraft subsystem tradeoffs for a target mission profile.",
+    "availableFrom": "2023-01-10",
+    "availableUntil": "2023-01-30",
+    "due": "2023-01-30",
+    "points": 100
+  },
+  {
+    "_id": "A302",
+    "course": "RS103",
+    "title": "A2 - Subsystem Integration",
+    "description": "Produce an integration plan and interface control matrix for spacecraft subsystems.",
+    "availableFrom": "2023-01-31",
+    "availableUntil": "2023-02-14",
+    "due": "2023-02-14",
+    "points": 100
+  },
+  {
+    "_id": "A401",
+    "course": "RS104",
+    "title": "A1 - Functional Groups",
+    "description": "Identify and classify functional groups in provided molecular structures.",
+    "availableFrom": "2023-01-10",
+    "availableUntil": "2023-01-22",
+    "due": "2023-01-22",
+    "points": 80
+  },
+  {
+    "_id": "A402",
+    "course": "RS104",
+    "title": "A2 - Organic Mechanisms",
+    "description": "Propose mechanisms for substitution and elimination reactions with stereochemistry.",
+    "availableFrom": "2023-01-23",
+    "availableUntil": "2023-02-05",
+    "due": "2023-02-05",
+    "points": 90
+  },
+  {
+    "_id": "A501",
+    "course": "RS105",
+    "title": "A1 - Coordination Complexes",
+    "description": "Predict geometry and magnetic behavior of transition metal complexes.",
+    "availableFrom": "2023-01-10",
+    "availableUntil": "2023-01-26",
+    "due": "2023-01-26",
+    "points": 85
+  },
+  {
+    "_id": "A502",
+    "course": "RS105",
+    "title": "A2 - Crystal Field",
+    "description": "Calculate CFSE values and correlate them with observed spectra.",
+    "availableFrom": "2023-01-27",
+    "availableUntil": "2023-02-10",
+    "due": "2023-02-10",
+    "points": 90
+  },
+  {
+    "_id": "A601",
+    "course": "RS106",
+    "title": "A1 - Thermodynamics",
+    "description": "Solve free-energy and equilibrium problems for multi-step reactions.",
+    "availableFrom": "2023-01-10",
+    "availableUntil": "2023-01-25",
+    "due": "2023-01-25",
+    "points": 100
+  },
+  {
+    "_id": "A602",
+    "course": "RS106",
+    "title": "A2 - Kinetics",
+    "description": "Determine rate laws and activation energies from experimental datasets.",
+    "availableFrom": "2023-01-26",
+    "availableUntil": "2023-02-09",
+    "due": "2023-02-09",
+    "points": 100
+  },
+  {
+    "_id": "A701",
+    "course": "RS107",
+    "title": "A1 - Script Translation",
+    "description": "Transliterate passages between Tengwar and Latin scripts with commentary.",
+    "availableFrom": "2023-01-10",
+    "availableUntil": "2023-01-27",
+    "due": "2023-01-27",
+    "points": 75
+  },
+  {
+    "_id": "A702",
+    "course": "RS107",
+    "title": "A2 - Comparative Grammar",
+    "description": "Compare Sindarin and Quenya grammar structures across selected texts.",
+    "availableFrom": "2023-01-28",
+    "availableUntil": "2023-02-11",
+    "due": "2023-02-11",
+    "points": 80
+  },
+  {
+    "_id": "A801",
+    "course": "RS108",
+    "title": "A1 - Council Analysis",
+    "description": "Analyze diplomatic strategy and stakeholder incentives in key council decisions.",
+    "availableFrom": "2023-01-10",
+    "availableUntil": "2023-01-29",
+    "due": "2023-01-29",
+    "points": 95
+  },
+  {
+    "_id": "A802",
+    "course": "RS108",
+    "title": "A2 - Conflict Resolution",
+    "description": "Design a conflict-resolution protocol for a multi-faction negotiation scenario.",
+    "availableFrom": "2023-01-30",
+    "availableUntil": "2023-02-13",
+    "due": "2023-02-13",
+    "points": 95
+  }
+]

@@ -1,10 +1,19 @@
 "use client";
 import { Link, useLocation } from "react-router-dom";
-import { navigationLinks } from "./data";
 import { AiOutlineDashboard } from "react-icons/ai";
 import { IoCalendarOutline } from "react-icons/io5";
-import { LiaBookSolid, LiaCogSolid } from "react-icons/lia";
+import { LiaBookSolid } from "react-icons/lia";
 import { FaInbox, FaRegCircleUser } from "react-icons/fa6";
+
+const navigationLinks = [
+  { label: "Account", path: "/Kanbas/Account", icon: <FaRegCircleUser className="fs-3 mb-1" /> },
+  { label: "Dashboard", path: "/Kanbas/Dashboard", icon: <AiOutlineDashboard className="fs-3 mb-1" /> },
+  { label: "Courses", path: "/Kanbas/Courses", icon: <LiaBookSolid className="fs-3 mb-1" /> },
+  { label: "Calendar", path: "/Kanbas/Calendar", icon: <IoCalendarOutline className="fs-3 mb-1" /> },
+  { label: "Inbox", path: "/Kanbas/Inbox", icon: <FaInbox className="fs-3 mb-1" /> },
+  { label: "Labs", path: "/Labs", icon: <AiOutlineDashboard className="fs-3 mb-1" /> },
+];
+
 export default function KanbasNavigation() {
   const location = useLocation();
   return (
@@ -22,7 +31,8 @@ export default function KanbasNavigation() {
           to={link.path}
           className={`list-group-item text-center border-0 ${location.pathname.startsWith(link.path) ? "bg-white text-danger" : "bg-black text-white"}`}
         >
-          {link.label}
+          <div>{link.icon}</div>
+          <div>{link.label}</div>
         </Link>
       ))}
     </div>
