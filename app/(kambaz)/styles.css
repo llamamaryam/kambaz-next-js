@@ -1,0 +1,9 @@
+.wd-main-content-offset {
+  padding: 16px;
+}
+
+@media (min-width: 768px) {
+  .wd-main-content-offset {
+    margin-left: 120px;
+  }
+}

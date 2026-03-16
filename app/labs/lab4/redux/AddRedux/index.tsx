@@ -1,0 +1,42 @@
+"use client";
+
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { add } from "./addReducer";
+
+export default function AddRedux() {
+  const [a, setA] = useState(12);
+  const [b, setB] = useState(23);
+  const { sum } = useSelector((state: RootState) => state.addReducer);
+  const dispatch = useDispatch();
+
+  return (
+    <div className="w-25" id="wd-add-redux">
+      <h1>Add Redux</h1>
+      <h2>
+        {a} + {b} = {sum}
+      </h2>
+      <input
+        type="number"
+        className="form-control mb-2"
+        defaultValue={a}
+        onChange={(e) => setA(parseInt(e.target.value))}
+      />
+      <input
+        type="number"
+        className="form-control mb-2"
+        defaultValue={b}
+        onChange={(e) => setB(parseInt(e.target.value))}
+      />
+      <button
+        className="btn btn-primary"
+        id="wd-add-redux-click"
+        onClick={() => dispatch(add({ a, b }))}
+      >
+        Add Redux
+      </button>
+      <hr />
+    </div>
+  );
+}

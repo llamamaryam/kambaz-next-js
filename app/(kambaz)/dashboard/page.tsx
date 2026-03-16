@@ -1,30 +1,87 @@
-import Link from "next/link";
-import * as db from "../database";
+"use client";
 
-const courseImages = [
-  "/images/electricalengineering.jpg",
-  "/images/stacked.jpg",
-  "/images/racket.jpg",
-  "/images/graphicdesigner.jpg",
-  "/images/picopark.jpg",
-  "/images/switch.jpg",
-  "/images/cybertruck.jpg",
-  "/images/teslabot.jpg",
-];
+import { useState } from "react";
+import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { addNewCourse, deleteCourse, updateCourse } from "../courses/reducer";
+import { enroll, unenroll } from "../enrollments/reducer";
+import { RootState } from "../store";
 
 export default function Dashboard() {
-  const courses = db.courses;
+  const { courses } = useSelector((state: RootState) => state.coursesReducer);
+  const { currentUser } = useSelector((state: RootState) => state.accountReducer);
+  const { enrollments } = useSelector((state: RootState) => state.enrollmentsReducer);
+  const dispatch = useDispatch();
+  const [showAllCourses, setShowAllCourses] = useState(false);
+  const [course, setCourse] = useState<any>({
+    _id: "0",
+    name: "New Course",
+    number: "New Number",
+    startDate: "2023-09-10",
+    endDate: "2023-12-15",
+    image: "/images/reactjs.jpg",
+    description: "New Description",
+  });
+
+  const userEnrollments = enrollments.filter(
+    (enrollment: any) => enrollment.user === currentUser?._id,
+  );
+
+  const isEnrolled = (courseId: string) =>
+    userEnrollments.some((enrollment: any) => enrollment.course === courseId);
+
+  const visibleCourses = showAllCourses
+    ? courses
+    : courses.filter((c: any) => isEnrolled(c._id));
+
   return (
-    <div id="wd-dashboard">
+    <div className="p-4" id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1>
       <hr />
+      <h5>
+        New Course
+        <button
+          className="btn btn-primary float-end me-2"
+          id="wd-dashboard-toggle-enrollments"
+          onClick={() => setShowAllCourses(!showAllCourses)}
+        >
+          Enrollments
+        </button>
+        <button
+          className="btn btn-warning float-end me-2"
+          onClick={() => dispatch(updateCourse(course))}
+          id="wd-update-course-click"
+        >
+          Update
+        </button>
+        <button
+          className="btn btn-primary float-end"
+          id="wd-add-new-course-click"
+          onClick={() => dispatch(addNewCourse(course))}
+        >
+          Add
+        </button>
+      </h5>
+      <br />
+      <input
+        className="form-control mb-2"
+        value={course.name}
+        onChange={(e) => setCourse({ ...course, name: e.target.value })}
+      />
+      <textarea
+        className="form-control"
+        rows={3}
+        value={course.description}
+        onChange={(e) => setCourse({ ...course, description: e.target.value })}
+      />
+      <hr />
       <h2 id="wd-dashboard-published">
-        Published Courses ({courses.length})
+        Published Courses ({visibleCourses.length})
       </h2>
       <hr />
       <div id="wd-dashboard-courses">
         <div className="row row-cols-1 row-cols-md-5 g-4">
-          {courses.map((course, index) => (
+          {visibleCourses.map((course: any) => (
             <div
               key={course._id}
               className="col"
@@ -34,9 +91,14 @@ export default function Dashboard() {
                 <Link
                   href={`/courses/${course._id}/home`}
                   className="wd-dashboard-course-link text-decoration-none text-dark"
+                  onClick={(event) => {
+                    if (!isEnrolled(course._id)) {
+                      event.preventDefault();
+                    }
+                  }}
                 >
                   <img
-                    src={courseImages[index % courseImages.length]}
+                    src={course.image || "/images/react.jpg"}
                     className="card-img-top"
                     alt={course.name}
                     width="100%"
@@ -57,6 +119,51 @@ export default function Dashboard() {
                       {course.description}
                     </p>
                     <button className="btn btn-primary">Go</button>
+                    {isEnrolled(course._id) ? (
+                      <button
+                        className="btn btn-danger me-2 float-end"
+                        id="wd-unenroll-course-click"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          if (!currentUser) return;
+                          dispatch(unenroll({ user: currentUser._id, course: course._id }));
+                        }}
+                      >
+                        Unenroll
+                      </button>
+                    ) : (
+                      <button
+                        className="btn btn-success me-2 float-end"
+                        id="wd-enroll-course-click"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          if (!currentUser) return;
+                          dispatch(enroll({ user: currentUser._id, course: course._id }));
+                        }}
+                      >
+                        Enroll
+                      </button>
+                    )}
+                    <button
+                      id="wd-edit-course-click"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        setCourse(course);
+                      }}
+                      className="btn btn-warning me-2 float-end"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={(event) => {
+                        event.preventDefault();
+                        dispatch(deleteCourse(course._id));
+                      }}
+                      className="btn btn-danger float-end"
+                      id="wd-delete-course-click"
+                    >
+                      Delete
+                    </button>
                   </div>
                 </Link>
               </div>

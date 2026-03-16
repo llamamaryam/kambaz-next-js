@@ -1,23 +1,55 @@
 "use client";
-import Link from "next/link";
-import { useParams } from "next/navigation";
-import * as db from "@/app/(kambaz)/database";
+import { useMemo, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { updateAssignment } from "../reducer";
+import { RootState } from "../../../../store";
 
 export default function AssignmentEditorPage() {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const { cid, aid } = useParams<{ cid: string; aid: string }>();
-  const assignment = db.assignments.find(
-    (currentAssignment) => currentAssignment.course === cid && currentAssignment._id === aid
+  const { assignments } = useSelector((state: RootState) => state.assignmentsReducer);
+  const assignment = assignments.find(
+    (currentAssignment: any) => currentAssignment.course === cid && currentAssignment._id === aid,
   );
+
+  const [formData, setFormData] = useState<any>(assignment || {});
+
+  useMemo(() => {
+    setFormData(assignment || {});
+  }, [assignment]);
 
   if (!assignment) {
     return <div id="wd-assignments-editor">Assignment not found.</div>;
   }
 
+  const save = () => {
+    dispatch(
+      updateAssignment({
+        ...assignment,
+        ...formData,
+        _id: assignment._id,
+        course: assignment.course,
+      }),
+    );
+    router.push(`/courses/${cid}/assignments`);
+  };
+
+  const cancel = () => {
+    router.push(`/courses/${cid}/assignments`);
+  };
+
   return (
     <div id="wd-assignments-editor" className="container-fluid p-0">
       <div className="mb-3">
         <label htmlFor="wd-name" className="form-label">Assignment Name</label>
-        <input id="wd-name" className="form-control" defaultValue={assignment.title} />
+        <input
+          id="wd-name"
+          className="form-control"
+          value={formData.title || ""}
+          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+        />
       </div>
 
       <div className="mb-3">
@@ -26,82 +58,59 @@ export default function AssignmentEditorPage() {
           id="wd-description"
           className="form-control"
           rows={5}
-          defaultValue={assignment.description}
+          value={formData.description || ""}
+          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
         />
       </div>
 
       <div className="row g-3 mb-3">
         <div className="col-md-4">
           <label htmlFor="wd-points" className="form-label">Points</label>
-          <input id="wd-points" className="form-control" defaultValue={assignment.points} />
-        </div>
-        <div className="col-md-4">
-          <label htmlFor="wd-group" className="form-label">Assignment Group</label>
-          <select id="wd-group" className="form-select" defaultValue="ASSIGNMENTS">
-            <option value="ASSIGNMENTS">ASSIGNMENTS</option>
-          </select>
-        </div>
-        <div className="col-md-4">
-          <label htmlFor="wd-display-grade-as" className="form-label">Display Grade as</label>
-          <select id="wd-display-grade-as" className="form-select" defaultValue="Percentage">
-            <option value="Percentage">Percentage</option>
-          </select>
-        </div>
-      </div>
-
-      <div className="mb-3">
-        <label htmlFor="wd-submission-type" className="form-label">Submission Type</label>
-        <select id="wd-submission-type" className="form-select" defaultValue="Online">
-          <option value="Online">Online</option>
-        </select>
-      </div>
-
-      <div className="mb-3">
-        <label className="form-label">Online Entry Options</label>
-        <div className="form-check">
-          <input className="form-check-input" type="checkbox" id="wd-text-entry" defaultChecked />
-          <label className="form-check-label" htmlFor="wd-text-entry">Text Entry</label>
-        </div>
-        <div className="form-check">
-          <input className="form-check-input" type="checkbox" id="wd-website-url" defaultChecked />
-          <label className="form-check-label" htmlFor="wd-website-url">Website URL</label>
-        </div>
-        <div className="form-check">
-          <input className="form-check-input" type="checkbox" id="wd-media-recordings" />
-          <label className="form-check-label" htmlFor="wd-media-recordings">Media Recordings</label>
-        </div>
-        <div className="form-check">
-          <input className="form-check-input" type="checkbox" id="wd-student-annotation" />
-          <label className="form-check-label" htmlFor="wd-student-annotation">Student Annotation</label>
-        </div>
-        <div className="form-check">
-          <input className="form-check-input" type="checkbox" id="wd-file-upload" defaultChecked />
-          <label className="form-check-label" htmlFor="wd-file-upload">File Uploads</label>
+          <input
+            id="wd-points"
+            className="form-control"
+            value={formData.points ?? ""}
+            onChange={(e) => setFormData({ ...formData, points: Number(e.target.value) })}
+          />
         </div>
       </div>
 
       <div className="row g-3 mb-4">
         <div className="col-md-4">
-          <label htmlFor="wd-assign-to" className="form-label">Assign to</label>
-          <input id="wd-assign-to" className="form-control" defaultValue="Everyone" />
-        </div>
-        <div className="col-md-3">
           <label htmlFor="wd-due-date" className="form-label">Due</label>
-          <input id="wd-due-date" className="form-control" type="date" defaultValue={assignment.due} />
+          <input
+            id="wd-due-date"
+            className="form-control"
+            type="date"
+            value={formData.due || ""}
+            onChange={(e) => setFormData({ ...formData, due: e.target.value })}
+          />
         </div>
-        <div className="col-md-3">
+        <div className="col-md-4">
           <label htmlFor="wd-available-from" className="form-label">Available from</label>
-          <input id="wd-available-from" className="form-control" type="date" defaultValue={assignment.availableFrom} />
+          <input
+            id="wd-available-from"
+            className="form-control"
+            type="date"
+            value={formData.availableFrom || ""}
+            onChange={(e) => setFormData({ ...formData, availableFrom: e.target.value })}
+          />
         </div>
-        <div className="col-md-2">
+        <div className="col-md-4">
           <label htmlFor="wd-available-until" className="form-label">Until</label>
-          <input id="wd-available-until" className="form-control" type="date" defaultValue={assignment.availableUntil} />
+          <input
+            id="wd-available-until"
+            className="form-control"
+            type="date"
+            value={formData.availableUntil || ""}
+            onChange={(e) => setFormData({ ...formData, availableUntil: e.target.value })}
+          />
         </div>
       </div>
 
       <div className="d-flex gap-2 justify-content-end">
-        <Link href={`/courses/${cid}/assignments`} className="btn btn-secondary">Cancel</Link>
-        <Link href={`/courses/${cid}/assignments`} className="btn btn-danger">Save</Link>
+        <button onClick={cancel} className="btn btn-secondary">Cancel</button>
+        <button onClick={save} className="btn btn-danger">Save</button>
       </div>
     </div>
   );
