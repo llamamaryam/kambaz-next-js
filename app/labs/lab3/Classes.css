@@ -1,0 +1,15 @@
+.lab3-static {
+  background-color: lightgray;
+  padding: 4px;
+}
+
+.lab3-dynamic {
+  color: blue;
+  font-weight: bold;
+}
+
+.lab3-conditional {
+  color: white;
+  background-color: green;
+  padding: 4px;
+}

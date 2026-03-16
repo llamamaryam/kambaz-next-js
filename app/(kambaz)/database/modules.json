@@ -1,0 +1,242 @@
+[
+  {
+    "_id": "M101",
+    "course": "RS101",
+    "name": "Week 1 - Rocket Basics",
+    "lessons": [
+      { "_id": "L101", "name": "Rocket Equation" },
+      { "_id": "L102", "name": "Thrust Fundamentals" },
+      { "_id": "L103", "name": "Propellant Types" }
+    ]
+  },
+  {
+    "_id": "M102",
+    "course": "RS101",
+    "name": "Week 2 - Engine Systems",
+    "lessons": [
+      { "_id": "L104", "name": "Combustion Chambers" },
+      { "_id": "L105", "name": "Nozzle Design" },
+      { "_id": "L106", "name": "Cooling Methods" }
+    ]
+  },
+  {
+    "_id": "M103",
+    "course": "RS101",
+    "name": "Week 3 - Mission Applications",
+    "lessons": [
+      { "_id": "L107", "name": "Launch Profiles" },
+      { "_id": "L108", "name": "Stage Separation" },
+      { "_id": "L109", "name": "Reliability and Testing" }
+    ]
+  },
+  {
+    "_id": "M201",
+    "course": "RS102",
+    "name": "Week 1 - Flow Fundamentals",
+    "lessons": [
+      { "_id": "L201", "name": "Continuity Equation" },
+      { "_id": "L202", "name": "Bernoulli Principle" },
+      { "_id": "L203", "name": "Boundary Layers" }
+    ]
+  },
+  {
+    "_id": "M202",
+    "course": "RS102",
+    "name": "Week 2 - Airfoil Theory",
+    "lessons": [
+      { "_id": "L204", "name": "Lift and Drag" },
+      { "_id": "L205", "name": "Airfoil Geometry" },
+      { "_id": "L206", "name": "Pressure Distribution" }
+    ]
+  },
+  {
+    "_id": "M203",
+    "course": "RS102",
+    "name": "Week 3 - Aircraft Performance",
+    "lessons": [
+      { "_id": "L207", "name": "Stall Behavior" },
+      { "_id": "L208", "name": "Wing Loading" },
+      { "_id": "L209", "name": "Performance Curves" }
+    ]
+  },
+  {
+    "_id": "M301",
+    "course": "RS103",
+    "name": "Week 1 - Design Process",
+    "lessons": [
+      { "_id": "L301", "name": "Mission Requirements" },
+      { "_id": "L302", "name": "Trade Studies" },
+      { "_id": "L303", "name": "Subsystem Allocation" }
+    ]
+  },
+  {
+    "_id": "M302",
+    "course": "RS103",
+    "name": "Week 2 - Subsystems",
+    "lessons": [
+      { "_id": "L304", "name": "Power Systems" },
+      { "_id": "L305", "name": "Thermal Control" },
+      { "_id": "L306", "name": "Communications" }
+    ]
+  },
+  {
+    "_id": "M303",
+    "course": "RS103",
+    "name": "Week 3 - Integration",
+    "lessons": [
+      { "_id": "L307", "name": "Payload Interfaces" },
+      { "_id": "L308", "name": "Assembly and Testing" },
+      { "_id": "L309", "name": "Launch Readiness" }
+    ]
+  },
+  {
+    "_id": "M401",
+    "course": "RS104",
+    "name": "Week 1 - Organic Structure",
+    "lessons": [
+      { "_id": "L401", "name": "Bonding and Hybridization" },
+      { "_id": "L402", "name": "Functional Groups" },
+      { "_id": "L403", "name": "Nomenclature" }
+    ]
+  },
+  {
+    "_id": "M402",
+    "course": "RS104",
+    "name": "Week 2 - Reaction Mechanisms",
+    "lessons": [
+      { "_id": "L404", "name": "SN1 and SN2" },
+      { "_id": "L405", "name": "E1 and E2" },
+      { "_id": "L406", "name": "Addition Reactions" }
+    ]
+  },
+  {
+    "_id": "M403",
+    "course": "RS104",
+    "name": "Week 3 - Synthesis",
+    "lessons": [
+      { "_id": "L407", "name": "Retrosynthesis" },
+      { "_id": "L408", "name": "Protecting Groups" },
+      { "_id": "L409", "name": "Lab Applications" }
+    ]
+  },
+  {
+    "_id": "M501",
+    "course": "RS105",
+    "name": "Week 1 - Inorganic Foundations",
+    "lessons": [
+      { "_id": "L501", "name": "Periodic Trends" },
+      { "_id": "L502", "name": "Coordination Basics" },
+      { "_id": "L503", "name": "Ligands" }
+    ]
+  },
+  {
+    "_id": "M502",
+    "course": "RS105",
+    "name": "Week 2 - Metal Complexes",
+    "lessons": [
+      { "_id": "L504", "name": "Crystal Field Theory" },
+      { "_id": "L505", "name": "Magnetism" },
+      { "_id": "L506", "name": "Electronic Spectra" }
+    ]
+  },
+  {
+    "_id": "M503",
+    "course": "RS105",
+    "name": "Week 3 - Applications",
+    "lessons": [
+      { "_id": "L507", "name": "Catalysis" },
+      { "_id": "L508", "name": "Bioinorganic Systems" },
+      { "_id": "L509", "name": "Materials Chemistry" }
+    ]
+  },
+  {
+    "_id": "M601",
+    "course": "RS106",
+    "name": "Week 1 - Thermodynamics",
+    "lessons": [
+      { "_id": "L601", "name": "Laws of Thermodynamics" },
+      { "_id": "L602", "name": "Gibbs Free Energy" },
+      { "_id": "L603", "name": "Equilibrium" }
+    ]
+  },
+  {
+    "_id": "M602",
+    "course": "RS106",
+    "name": "Week 2 - Kinetics",
+    "lessons": [
+      { "_id": "L604", "name": "Rate Laws" },
+      { "_id": "L605", "name": "Activation Energy" },
+      { "_id": "L606", "name": "Catalysis and Mechanisms" }
+    ]
+  },
+  {
+    "_id": "M603",
+    "course": "RS106",
+    "name": "Week 3 - Spectroscopy",
+    "lessons": [
+      { "_id": "L607", "name": "UV-Vis" },
+      { "_id": "L608", "name": "IR Spectroscopy" },
+      { "_id": "L609", "name": "NMR Basics" }
+    ]
+  },
+  {
+    "_id": "M701",
+    "course": "RS107",
+    "name": "Week 1 - Elvish Languages",
+    "lessons": [
+      { "_id": "L701", "name": "Sindarin Overview" },
+      { "_id": "L702", "name": "Quenya Grammar" },
+      { "_id": "L703", "name": "Historical Context" }
+    ]
+  },
+  {
+    "_id": "M702",
+    "course": "RS107",
+    "name": "Week 2 - Scripts",
+    "lessons": [
+      { "_id": "L704", "name": "Tengwar" },
+      { "_id": "L705", "name": "Cirth" },
+      { "_id": "L706", "name": "Inscription Analysis" }
+    ]
+  },
+  {
+    "_id": "M703",
+    "course": "RS107",
+    "name": "Week 3 - Comparative Linguistics",
+    "lessons": [
+      { "_id": "L707", "name": "Language Families" },
+      { "_id": "L708", "name": "Phonology" },
+      { "_id": "L709", "name": "Translation Workshop" }
+    ]
+  },
+  {
+    "_id": "M801",
+    "course": "RS108",
+    "name": "Week 1 - Diplomatic History",
+    "lessons": [
+      { "_id": "L801", "name": "Alliances of the First Age" },
+      { "_id": "L802", "name": "Council Structures" },
+      { "_id": "L803", "name": "Conflict Triggers" }
+    ]
+  },
+  {
+    "_id": "M802",
+    "course": "RS108",
+    "name": "Week 2 - Leadership and Negotiation",
+    "lessons": [
+      { "_id": "L804", "name": "Diplomatic Strategy" },
+      { "_id": "L805", "name": "Mediation Cases" },
+      { "_id": "L806", "name": "Decision Frameworks" }
+    ]
+  },
+  {
+    "_id": "M803",
+    "course": "RS108",
+    "name": "Week 3 - Case Studies",
+    "lessons": [
+      { "_id": "L807", "name": "Council of Elrond" },
+      { "_id": "L808", "name": "War of the Ring" },
+      { "_id": "L809", "name": "Post-war Governance" }
+    ]
+  }
+]
