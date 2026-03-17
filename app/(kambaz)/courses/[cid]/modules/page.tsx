@@ -59,7 +59,7 @@ export default function ModulesPage() {
               )}
             </div>
             <ul className="list-group rounded-0">
-              {module.lessons.map((lesson) => (
+              {module.lessons.map((lesson: any) => (
                 <li key={lesson._id} className="list-group-item p-3 ps-1">
                   {lesson.name}
                 </li>

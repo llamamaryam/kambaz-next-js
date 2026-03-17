@@ -15,7 +15,7 @@ export default function Profile() {
   const fetchProfile = () => {
     if (!currentUser) return router.replace("/account/signin");
     setProfile({
-      ...currentUser,
+      ...(currentUser as Record<string, any>),
       username: currentUser.username ?? currentUser.loginId ?? "",
       password: currentUser.password ?? "password",
       dob: currentUser.dob ?? "",
