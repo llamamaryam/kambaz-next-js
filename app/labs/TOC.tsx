@@ -9,6 +9,7 @@ export default function TOC() {
   const isLab2Active = pathname === "/labs/lab2" || pathname.startsWith("/labs/lab2/");
   const isLab3Active = pathname === "/labs/lab3" || pathname.startsWith("/labs/lab3/");
   const isLab4Active = pathname === "/labs/lab4" || pathname.startsWith("/labs/lab4/");
+  const isLab5Active = pathname === "/labs/lab5" || pathname.startsWith("/labs/lab5/");
 
   return (
     <ul className="nav nav-pills mb-3">
@@ -35,6 +36,11 @@ export default function TOC() {
       <li className="nav-item">
         <Link href="/labs/lab4" className={`nav-link ${isLab4Active ? "active" : ""}`}>
           Lab 4
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link href="/labs/lab5" className={`nav-link ${isLab5Active ? "active" : ""}`}>
+          Lab 5
         </Link>
       </li>
     </ul>

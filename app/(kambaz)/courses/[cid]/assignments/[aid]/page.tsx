@@ -1,44 +1,82 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { updateAssignment } from "../reducer";
+import { setAssignments, updateAssignment as updateAssignmentAction } from "../reducer";
 import { RootState } from "../../../../store";
+import * as client from "../client";
+
+const defaultAssignment = {
+  title: "New Assignment",
+  description: "",
+  points: 100,
+  due: "",
+  availableFrom: "",
+  availableUntil: "",
+};
 
 export default function AssignmentEditorPage() {
   const dispatch = useDispatch();
   const router = useRouter();
   const { cid, aid } = useParams<{ cid: string; aid: string }>();
   const { assignments } = useSelector((state: RootState) => state.assignmentsReducer);
-  const assignment = assignments.find(
+  const existingAssignment = assignments.find(
     (currentAssignment: any) => currentAssignment.course === cid && currentAssignment._id === aid,
   );
+  const isNewAssignment = aid === "new";
+  const [formData, setFormData] = useState<any>(isNewAssignment ? defaultAssignment : existingAssignment || defaultAssignment);
+  const [loading, setLoading] = useState(!isNewAssignment && !existingAssignment);
 
-  const [formData, setFormData] = useState<any>(assignment || {});
+  useEffect(() => {
+    const loadAssignment = async () => {
+      if (isNewAssignment) {
+        setFormData(defaultAssignment);
+        setLoading(false);
+        return;
+      }
+      if (existingAssignment) {
+        setFormData(existingAssignment);
+        setLoading(false);
+        return;
+      }
+      try {
+        const assignment = await client.findAssignmentById(aid);
+        setFormData(assignment);
+        dispatch(setAssignments([...assignments.filter((currentAssignment: any) => currentAssignment.course !== cid), assignment]));
+      } catch (error) {
+        console.error(error);
+      }
+      setLoading(false);
+    };
 
-  useMemo(() => {
-    setFormData(assignment || {});
-  }, [assignment]);
+    loadAssignment();
+  }, [aid, assignments, cid, dispatch, existingAssignment, isNewAssignment]);
 
-  if (!assignment) {
+  if (!isNewAssignment && !loading && !formData._id) {
     return <div id="wd-assignments-editor">Assignment not found.</div>;
   }
 
-  const save = () => {
-    dispatch(
-      updateAssignment({
-        ...assignment,
+  const save = async () => {
+    if (isNewAssignment) {
+      await client.createAssignment(cid, { ...formData, course: cid });
+    } else {
+      const updatedAssignment = await client.updateAssignment({
         ...formData,
-        _id: assignment._id,
-        course: assignment.course,
-      }),
-    );
+        _id: formData._id,
+        course: cid,
+      });
+      dispatch(updateAssignmentAction(updatedAssignment));
+    }
     router.push(`/courses/${cid}/assignments`);
   };
 
   const cancel = () => {
     router.push(`/courses/${cid}/assignments`);
   };
+
+  if (loading) {
+    return <div id="wd-assignments-editor">Loading...</div>;
+  }
 
   return (
     <div id="wd-assignments-editor" className="container-fluid p-0">

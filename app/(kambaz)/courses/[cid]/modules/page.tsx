@@ -1,47 +1,74 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { v4 as uuidv4 } from "uuid";
-import * as db from "@/app/(kambaz)/database";
+import { useDispatch, useSelector } from "react-redux";
 import ModulesControls from "./ModulesControls";
 import ModuleControlButtons from "./ModuleControlButtons";
+import {
+  editModule as editModuleAction,
+  setModules,
+  updateModule as updateModuleAction,
+} from "./reducer";
+import { RootState } from "../../../store";
+import * as client from "../../client";
 
 export default function ModulesPage() {
   const { cid } = useParams<{ cid: string }>();
-  const [modules, setModules] = useState<any[]>(db.modules);
+  const { modules } = useSelector((state: RootState) => state.modulesReducer);
+  const dispatch = useDispatch();
   const [moduleName, setModuleName] = useState("");
 
-  const addModule = () => {
-    if (!moduleName.trim()) return;
-    setModules([...modules, { _id: uuidv4(), name: moduleName, course: cid, lessons: [] }]);
+  const fetchModules = async () => {
+    const modules = await client.findModulesForCourse(cid as string);
+    dispatch(setModules(modules));
+  };
+
+  useEffect(() => {
+    fetchModules();
+  }, [cid]);
+
+  const onCreateModuleForCourse = async () => {
+    if (!cid || !moduleName.trim()) return;
+    const newModule = { name: moduleName, course: cid };
+    const module = await client.createModuleForCourse(cid, newModule);
+    dispatch(setModules([...modules, module]));
     setModuleName("");
   };
 
-  const deleteModule = (moduleId: string) => {
-    setModules(modules.filter((m) => m._id !== moduleId));
+  const onRemoveModule = async (moduleId: string) => {
+    await client.deleteModule(moduleId);
+    dispatch(setModules(modules.filter((m: any) => m._id !== moduleId)));
   };
 
   const editModule = (moduleId: string) => {
-    setModules(modules.map((m) => (m._id === moduleId ? { ...m, editing: true } : m)));
+    dispatch(editModuleAction(moduleId));
   };
 
   const updateModule = (module: any) => {
-    setModules(modules.map((m) => (m._id === module._id ? module : m)));
+    dispatch(updateModuleAction(module));
   };
 
-  const courseModules = modules.filter((module) => module.course === cid);
+  const onUpdateModule = async (module: any) => {
+    await client.updateModule(module);
+    const newModules = modules.map((m: any) => (m._id === module._id ? module : m));
+    dispatch(setModules(newModules));
+  };
 
   return (
     <div className="wd-modules">
-      <ModulesControls setModuleName={setModuleName} moduleName={moduleName} addModule={addModule} />
+      <ModulesControls
+        setModuleName={setModuleName}
+        moduleName={moduleName}
+        addModule={onCreateModuleForCourse}
+      />
       <h3>Modules</h3>
       <ul className="list-group rounded-0">
-        {courseModules.map((module) => (
+        {modules.map((module) => (
           <li key={module._id} className="list-group-item p-0 mb-4 fs-5 border-gray">
             <div className="p-3 ps-2 bg-secondary">
               <ModuleControlButtons
                 moduleId={module._id}
-                deleteModule={deleteModule}
+                deleteModule={(moduleId) => onRemoveModule(moduleId)}
                 editModule={editModule}
               />
               {!module.editing && <b>{module.name}</b>}
@@ -51,10 +78,10 @@ export default function ModulesPage() {
                   onChange={(e) => updateModule({ ...module, name: e.target.value })}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      updateModule({ ...module, editing: false });
+                      onUpdateModule({ ...module, editing: false });
                     }
                   }}
-                  defaultValue={module.name}
+                  value={module.name}
                 />
               )}
             </div>
