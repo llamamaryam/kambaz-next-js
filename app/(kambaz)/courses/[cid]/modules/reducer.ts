@@ -1,7 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 
-const initialState = {
+type Lesson = {
+  _id: string;
+  name: string;
+};
+
+export type Module = {
+  _id: string;
+  name: string;
+  course: string;
+  lessons: Lesson[];
+  editing?: boolean;
+};
+
+type ModulesState = {
+  modules: Module[];
+};
+
+const initialState: ModulesState = {
   modules: [],
 };
 
@@ -9,30 +26,30 @@ const modulesSlice = createSlice({
   name: "modules",
   initialState,
   reducers: {
-    setModules: (state, action) => {
+    setModules: (state, action: PayloadAction<Module[]>) => {
       state.modules = action.payload;
     },
-    addModule: (state, { payload: module }) => {
-      const newModule: any = {
+    addModule: (state, { payload: module }: PayloadAction<Pick<Module, "name" | "course">>) => {
+      const newModule: Module = {
         _id: uuidv4(),
         lessons: [],
         name: module.name,
         course: module.course,
       };
-      state.modules = [...state.modules, newModule] as any;
+      state.modules = [...state.modules, newModule];
     },
-    deleteModule: (state, { payload: moduleId }) => {
-      state.modules = state.modules.filter((m: any) => m._id !== moduleId);
+    deleteModule: (state, { payload: moduleId }: PayloadAction<string>) => {
+      state.modules = state.modules.filter((m) => m._id !== moduleId);
     },
-    updateModule: (state, { payload: module }) => {
-      state.modules = state.modules.map((m: any) =>
+    updateModule: (state, { payload: module }: PayloadAction<Module>) => {
+      state.modules = state.modules.map((m) =>
         m._id === module._id ? module : m,
-      ) as any;
+      );
     },
-    editModule: (state, { payload: moduleId }) => {
-      state.modules = state.modules.map((m: any) =>
+    editModule: (state, { payload: moduleId }: PayloadAction<string>) => {
+      state.modules = state.modules.map((m) =>
         m._id === moduleId ? { ...m, editing: true } : m,
-      ) as any;
+      );
     },
   },
 });
