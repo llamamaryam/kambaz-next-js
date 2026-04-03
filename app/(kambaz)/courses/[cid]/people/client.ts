@@ -1,6 +1,6 @@
 import axios from "axios";
+import { HTTP_SERVER } from "../../../../lib/http";
 
-const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
 const COURSES_API = `${HTTP_SERVER}/api/courses`;
 const USERS_API = `${HTTP_SERVER}/api/users`;
 

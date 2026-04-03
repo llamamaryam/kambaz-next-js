@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import { ReactNode, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
@@ -22,7 +23,9 @@ export default function EnrollmentsSession({ children }: { children: ReactNode }
         const enrollments = await client.findMyEnrollments();
         dispatch(setEnrollments(enrollments));
       } catch (error) {
-        console.error(error);
+        if (!axios.isAxiosError(error) || error.response?.status !== 401) {
+          console.error(error);
+        }
         dispatch(setEnrollments([]));
       }
       setPending(false);

@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import * as client from "./client";
@@ -14,7 +15,9 @@ export default function Session({ children }: { children: any }) {
       const currentUser = await client.profile();
       dispatch(setCurrentUser(currentUser));
     } catch (err: any) {
-      console.error(err);
+      if (!axios.isAxiosError(err) || err.response?.status !== 401) {
+        console.error(err);
+      }
     }
     setPending(false);
   };
