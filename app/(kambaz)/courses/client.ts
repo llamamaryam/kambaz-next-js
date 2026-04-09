@@ -1,11 +1,10 @@
 import axios from "axios";
-import { HTTP_SERVER } from "../../lib/http";
 
 const axiosWithCredentials = axios.create({ withCredentials: true });
 
-const COURSES_API = `${HTTP_SERVER}/api/courses`;
-const USERS_API = `${HTTP_SERVER}/api/users`;
-const MODULES_API = `${HTTP_SERVER}/api/modules`;
+const COURSES_API = "/api/courses";
+const USERS_API = "/api/users";
+const MODULES_API = "/api/modules";
 
 export const fetchAllCourses = async () => {
   const { data } = await axios.get(COURSES_API);

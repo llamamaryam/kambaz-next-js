@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
-const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
+const HTTP_SERVER = "";
+
 export default function WorkingWithObjects() {
   const [assignment, setAssignment] = useState({
     id: 1, title: "NodeJS Assignment",

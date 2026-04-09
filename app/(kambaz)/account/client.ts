@@ -1,8 +1,7 @@
 import axios from "axios";
-import { HTTP_SERVER } from "../../lib/http";
 const axiosWithCredentials = axios.create({ withCredentials: true });
 
-export const USERS_API = `${HTTP_SERVER}/api/users`;
+export const USERS_API = "/api/users";
 
 export const signin = async (credentials: any) => {
   const response = await axiosWithCredentials.post(`${USERS_API}/signin`, credentials);

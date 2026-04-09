@@ -6,7 +6,8 @@ import WorkingWithObjectsAsynchronously from "./WorkingWithObjectsAsynchronously
 import WorkingWithArrays from "./WorkingWithArrays";
 import WorkingWithArraysAsynchronously from "./WorkingWithArraysAsynchronously";
 import HttpClient from "./HttpClient";
-const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
+const HTTP_SERVER = "";
+
 export default function Lab5() {
   return (
     <div id="wd-lab5">

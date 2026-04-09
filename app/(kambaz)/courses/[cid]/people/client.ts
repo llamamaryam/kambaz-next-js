@@ -1,8 +1,7 @@
 import axios from "axios";
-import { HTTP_SERVER } from "../../../../lib/http";
 
-const COURSES_API = `${HTTP_SERVER}/api/courses`;
-const USERS_API = `${HTTP_SERVER}/api/users`;
+const COURSES_API = "/api/courses";
+const USERS_API = "/api/users";
 
 export const findUsersForCourse = async (courseId: string) => {
   const { data } = await axios.get(`${COURSES_API}/${courseId}/users`);

@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
-const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
+const HTTP_SERVER = "";
+
 export default function QueryParameters() {
   const [a, setA] = useState("34");
   const [b, setB] = useState("23");

@@ -1,4 +1,5 @@
-const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
+const HTTP_SERVER = "same-origin";
+
 export default function EnvironmentVariables() {
   return (
     <div id="wd-environment-variables">
