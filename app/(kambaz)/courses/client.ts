@@ -1,7 +1,7 @@
 import axios from "axios";
+import { HTTP_SERVER } from "../../lib/http";
 
 const axiosWithCredentials = axios.create({ withCredentials: true });
-export const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
 
 const COURSES_API = `${HTTP_SERVER}/api/courses`;
 export const USERS_API = `${HTTP_SERVER}/api/users`;
