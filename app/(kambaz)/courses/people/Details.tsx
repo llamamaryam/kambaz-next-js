@@ -5,7 +5,6 @@ import { FaCheck, FaUserCircle } from "react-icons/fa";
 import { FaPencil } from "react-icons/fa6";
 import { IoCloseSharp } from "react-icons/io5";
 import { useRouter } from "next/navigation";
-import { FormControl } from "react-bootstrap";
 import * as client from "../../account/client";
 
 export default function PeopleDetails({
@@ -76,8 +75,9 @@ export default function PeopleDetails({
           </div>
         )}
         {editing && (
-          <FormControl
-            className="w-50 wd-edit-name"
+          <input
+            type="text"
+            className="form-control w-50 wd-edit-name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             onKeyDown={(e) => {
