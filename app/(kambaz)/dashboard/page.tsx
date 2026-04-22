@@ -7,7 +7,6 @@ import { setCourses } from "../courses/reducer";
 import { enroll, unenroll } from "../enrollments/reducer";
 import { RootState } from "../store";
 import * as client from "../courses/client";
-import * as enrollmentsClient from "../enrollments/client";
 
 export default function Dashboard() {
   const { courses } = useSelector((state: RootState) => state.coursesReducer);
@@ -73,13 +72,13 @@ export default function Dashboard() {
 
   const onEnrollInCourse = async (courseId: string) => {
     if (!currentUser) return;
-    await enrollmentsClient.enrollInCourse(courseId);
+    await client.enrollIntoCourse(currentUser._id, courseId);
     dispatch(enroll({ user: currentUser._id, course: courseId }));
   };
 
   const onUnenrollFromCourse = async (courseId: string) => {
     if (!currentUser) return;
-    await enrollmentsClient.unenrollFromCourse(courseId);
+    await client.unenrollFromCourse(currentUser._id, courseId);
     dispatch(unenroll({ user: currentUser._id, course: courseId }));
   };
 

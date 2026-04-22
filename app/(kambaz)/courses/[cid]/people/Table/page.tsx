@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
+import * as coursesClient from "../../../client";
 import * as client from "../client";
 
 const emptyUser = {
@@ -26,7 +27,7 @@ export default function PeopleTable() {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const courseUsers = await client.findUsersForCourse(cid);
+      const courseUsers = await coursesClient.findUsersForCourse(cid);
       setUsers(courseUsers);
     };
 

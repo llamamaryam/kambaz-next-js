@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import userSchema from "./schema.js";
 
-const UserModel = mongoose.models.User || mongoose.model("User", userSchema);
+const UserModel = mongoose.model("UserModel", userSchema);
 
 export default UserModel;

@@ -22,6 +22,16 @@ export default function AccountNavigation() {
           </Link>
         </li>
       ))}
+      {currentUser && currentUser.role === "ADMIN" && (
+        <li className="nav-item">
+          <Link
+            href="/account/users"
+            className={`nav-link ${pathname.endsWith("users") ? "active" : ""}`}
+          >
+            Users
+          </Link>
+        </li>
+      )}
     </ul>
   );
 }
