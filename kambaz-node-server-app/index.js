@@ -14,6 +14,11 @@ const CONNECTION_STRING =
   process.env.DATABASE_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kambaz";
 const app = express();
 const PORT = process.env.PORT || 4000;
+const IS_PROD = process.env.SERVER_ENV === "production" || process.env.NODE_ENV === "production";
+const CLIENT_URLS = (process.env.CLIENT_URLS || process.env.CLIENT_URL || "http://localhost:3000")
+  .split(",")
+  .map((url) => url.trim())
+  .filter(Boolean);
 const ENROLLMENTS_PATH = path.resolve("../app/(kambaz)/database/enrollments.json");
 
 let db = { enrollments: [] };
@@ -36,15 +41,31 @@ mongoose
 app.use(
   cors({
     credentials: true,
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: (origin, callback) => {
+      if (!origin || CLIENT_URLS.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+      callback(new Error("Not allowed by CORS"));
+    },
   }),
 );
+
+if (IS_PROD) {
+  app.set("trust proxy", 1);
+}
 
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "super secret session phrase",
     resave: false,
     saveUninitialized: false,
+    proxy: IS_PROD,
+    cookie: {
+      httpOnly: true,
+      secure: IS_PROD,
+      sameSite: IS_PROD ? "none" : "lax",
+    },
   }),
 );
 

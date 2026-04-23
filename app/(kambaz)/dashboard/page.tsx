@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setCourses } from "../courses/reducer";
 import { enroll, unenroll } from "../enrollments/reducer";
@@ -15,8 +16,11 @@ export default function Dashboard() {
   const { enrollments } = useSelector((state: RootState) => state.enrollmentsReducer);
   const dispatch = useDispatch();
   const [showAllCourses, setShowAllCourses] = useState(false);
+  const [actionError, setActionError] = useState("");
+  const [busyAction, setBusyAction] = useState<"add" | "update" | "enroll" | "unenroll" | "delete" | null>(null);
+  const [busyCourseId, setBusyCourseId] = useState<string | null>(null);
   const [course, setCourse] = useState<any>({
-    _id: "0",
+    _id: "",
     name: "New Course",
     number: "New Number",
     startDate: "2023-09-10",
@@ -48,39 +52,112 @@ export default function Dashboard() {
   }, [currentUser]);
 
   const onAddNewCourse = async () => {
-    const newCourse = await client.createCourse(course);
-    dispatch(setCourses([...courses, newCourse]));
+    if (!currentUser) {
+      setActionError("Please sign in to add a course.");
+      return;
+    }
+    try {
+      setActionError("");
+      setBusyAction("add");
+      const newCourse = await client.createCourse(course);
+      dispatch(setCourses([...courses, newCourse]));
+      setCourse({
+        _id: "",
+        name: "New Course",
+        number: "New Number",
+        startDate: "2023-09-10",
+        endDate: "2023-12-15",
+        image: "/images/reactjs.jpg",
+        description: "New Description",
+      });
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        setActionError("Your session expired. Please sign in again.");
+        return;
+      }
+      setActionError("Unable to add course right now.");
+    } finally {
+      setBusyAction(null);
+    }
   };
 
   const onDeleteCourse = async (courseId: string) => {
-    await client.deleteCourse(courseId);
-    dispatch(setCourses(courses.filter((course: any) => course._id !== courseId)));
+    try {
+      setActionError("");
+      setBusyAction("delete");
+      setBusyCourseId(courseId);
+      await client.deleteCourse(courseId);
+      dispatch(setCourses(courses.filter((course: any) => course._id !== courseId)));
+    } catch {
+      setActionError("Unable to delete course right now.");
+    } finally {
+      setBusyAction(null);
+      setBusyCourseId(null);
+    }
   };
 
   const onUpdateCourse = async () => {
-    await client.updateCourse(course);
-    dispatch(
-      setCourses(
-        courses.map((c: any) => {
-          if (c._id === course._id) {
-            return course;
-          }
-          return c;
-        }),
-      ),
-    );
+    if (!course._id) {
+      setActionError("Select Edit on a course before updating.");
+      return;
+    }
+    try {
+      setActionError("");
+      setBusyAction("update");
+      await client.updateCourse(course);
+      dispatch(
+        setCourses(
+          courses.map((c: any) => {
+            if (c._id === course._id) {
+              return course;
+            }
+            return c;
+          }),
+        ),
+      );
+    } catch {
+      setActionError("Unable to update course right now.");
+    } finally {
+      setBusyAction(null);
+    }
   };
 
   const onEnrollInCourse = async (courseId: string) => {
-    if (!currentUser) return;
-    await client.enrollIntoCourse(currentUser._id, courseId);
-    dispatch(enroll({ user: currentUser._id, course: courseId }));
+    if (!currentUser) {
+      setActionError("Please sign in to enroll.");
+      return;
+    }
+    try {
+      setActionError("");
+      setBusyAction("enroll");
+      setBusyCourseId(courseId);
+      await client.enrollIntoCourse(currentUser._id, courseId);
+      dispatch(enroll({ user: currentUser._id, course: courseId }));
+    } catch {
+      setActionError("Unable to enroll right now.");
+    } finally {
+      setBusyAction(null);
+      setBusyCourseId(null);
+    }
   };
 
   const onUnenrollFromCourse = async (courseId: string) => {
-    if (!currentUser) return;
-    await client.unenrollFromCourse(currentUser._id, courseId);
-    dispatch(unenroll({ user: currentUser._id, course: courseId }));
+    if (!currentUser) {
+      setActionError("Please sign in to unenroll.");
+      return;
+    }
+    try {
+      setActionError("");
+      setBusyAction("unenroll");
+      setBusyCourseId(courseId);
+      await client.unenrollFromCourse(currentUser._id, courseId);
+      dispatch(unenroll({ user: currentUser._id, course: courseId }));
+    } catch {
+      setActionError("Unable to unenroll right now.");
+    } finally {
+      setBusyAction(null);
+      setBusyCourseId(null);
+    }
   };
 
   const visibleCourses = showAllCourses
@@ -96,6 +173,7 @@ export default function Dashboard() {
         <button
           className="btn btn-primary float-end me-2"
           id="wd-dashboard-toggle-enrollments"
+          disabled={busyAction !== null}
           onClick={() => setShowAllCourses(!showAllCourses)}
         >
           Enrollments
@@ -104,15 +182,17 @@ export default function Dashboard() {
           className="btn btn-secondary float-end me-2"
           onClick={onUpdateCourse}
           id="wd-update-course-click"
+          disabled={busyAction !== null}
         >
-          Update
+          {busyAction === "update" ? "Updating..." : "Update"}
         </button>
         <button
           className="btn btn-primary float-end"
           id="wd-add-new-course-click"
           onClick={onAddNewCourse}
+          disabled={busyAction !== null}
         >
-          Add
+          {busyAction === "add" ? "Adding..." : "Add"}
         </button>
       </h5>
       <br />
@@ -127,6 +207,7 @@ export default function Dashboard() {
         value={course.description}
         onChange={(e) => setCourse({ ...course, description: e.target.value })}
       />
+      {actionError && <div className="alert alert-warning mt-3 mb-0">{actionError}</div>}
       <hr />
       <h2 id="wd-dashboard-published">
         Published Courses ({visibleCourses.length})
@@ -158,7 +239,17 @@ export default function Dashboard() {
                     height={160}
                     style={{ objectFit: "cover", width: "100%" }}
                   />
-                  <div className="card-body">
+                </Link>
+                <div className="card-body">
+                  <Link
+                    href={`/courses/${course._id}/home`}
+                    className="wd-dashboard-course-link text-decoration-none text-dark"
+                    onClick={(event) => {
+                      if (!isEnrolled(course._id)) {
+                        event.preventDefault();
+                      }
+                    }}
+                  >
                     <h5
                       className="card-title text-nowrap overflow-hidden"
                       style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
@@ -171,52 +262,57 @@ export default function Dashboard() {
                     >
                       {course.description}
                     </p>
-                    <button className="btn btn-primary">Go</button>
-                    {isEnrolled(course._id) ? (
-                      <button
-                        className="btn btn-danger me-2 float-end"
-                        id="wd-unenroll-course-click"
-                        onClick={(event) => {
-                          event.preventDefault();
-                          onUnenrollFromCourse(course._id);
-                        }}
-                      >
-                        Unenroll
-                      </button>
-                    ) : (
-                      <button
-                        className="btn btn-success me-2 float-end"
-                        id="wd-enroll-course-click"
-                        onClick={(event) => {
-                          event.preventDefault();
-                          onEnrollInCourse(course._id);
-                        }}
-                      >
-                        Enroll
-                      </button>
-                    )}
-                    <button
-                      id="wd-edit-course-click"
-                      onClick={(event) => {
+                  </Link>
+                  <Link
+                    href={`/courses/${course._id}/home`}
+                    className="btn btn-primary"
+                    onClick={(event) => {
+                      if (!isEnrolled(course._id)) {
                         event.preventDefault();
-                        setCourse(course);
-                      }}
-                      className="btn btn-warning me-2 float-end"
-                    >
-                      Edit
-                    </button>
+                      }
+                    }}
+                  >
+                    Go
+                  </Link>
+                  {isEnrolled(course._id) ? (
                     <button
-                      onClick={(event) => {
-                        event.preventDefault();
-                        onDeleteCourse(course._id);
-                      }}
-                      className="btn btn-danger float-end"
-                      id="wd-delete-course-click"
+                      className="btn btn-danger me-2 float-end"
+                      id="wd-unenroll-course-click"
+                      disabled={busyAction !== null}
+                      onClick={() => onUnenrollFromCourse(course._id)}
                     >
-                      Delete
+                      {busyAction === "unenroll" && busyCourseId === course._id ? "Unenrolling..." : "Unenroll"}
                     </button>
-                  </div>
-                </Link>
+                  ) : (
+                    <button
+                      className="btn btn-success me-2 float-end"
+                      id="wd-enroll-course-click"
+                      disabled={busyAction !== null}
+                      onClick={() => onEnrollInCourse(course._id)}
+                    >
+                      {busyAction === "enroll" && busyCourseId === course._id ? "Enrolling..." : "Enroll"}
+                    </button>
+                  )}
+                  <button
+                    id="wd-edit-course-click"
+                    disabled={busyAction !== null}
+                    onClick={() => {
+                      setActionError("");
+                      setCourse(course);
+                    }}
+                    className="btn btn-warning me-2 float-end"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => onDeleteCourse(course._id)}
+                    className="btn btn-danger float-end"
+                    id="wd-delete-course-click"
+                    disabled={busyAction !== null}
+                  >
+                    {busyAction === "delete" && busyCourseId === course._id ? "Deleting..." : "Delete"}
+                  </button>
+                </div>
               </div>
             </div>
           ))}
