@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { setCourses } from "../courses/reducer";
 import { enroll, unenroll } from "../enrollments/reducer";
@@ -149,13 +150,13 @@ export default function Dashboard() {
                     }
                   }}
                 >
-                  <img
+                  <Image
                     src={course.image || "/images/react.jpg"}
                     className="card-img-top"
                     alt={course.name}
-                    width="100%"
+                    width={300}
                     height={160}
-                    style={{ objectFit: "cover" }}
+                    style={{ objectFit: "cover", width: "100%" }}
                   />
                   <div className="card-body">
                     <h5
