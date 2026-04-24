@@ -9,6 +9,7 @@ import UserRoutes from "./Users/routes.js";
 import CourseRoutes from "./Courses/routes.js";
 import ModuleRoutes from "./Modules/routes.js";
 import EnrollmentRoutes from "./Enrollments/routes.js";
+import AssignmentRoutes from "./Assignments/routes.js";
 
 const CONNECTION_STRING =
   process.env.DATABASE_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kambaz";
@@ -79,6 +80,7 @@ UserRoutes(app, {});
 CourseRoutes(app, db);
 ModuleRoutes(app, db);
 EnrollmentRoutes(app);
+AssignmentRoutes(app);
 
 app.listen(PORT, () => {
   console.log(`Server listening on http://localhost:${PORT}`);

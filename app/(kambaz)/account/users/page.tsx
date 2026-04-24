@@ -9,44 +9,75 @@ export default function Users() {
   const [users, setUsers] = useState<any[]>([]);
   const [role, setRole] = useState("");
   const [name, setName] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const { uid } = useParams();
 
   const fetchUsers = async () => {
-    const users = await client.findAllUsers();
-    setUsers(users);
+    try {
+      const users = await client.findAllUsers();
+      setUsers(users);
+    } catch (error) {
+      setErrorMessage("Unable to load users right now.");
+    }
   };
 
   const filterUsersByRole = async (role: string) => {
     setRole(role);
-    if (role) {
-      const users = await client.findUsersByRole(role);
-      setUsers(users);
-    } else {
-      fetchUsers();
+    setErrorMessage("");
+    try {
+      if (role) {
+        const users = await client.findUsersByRole(role);
+        setUsers(users);
+      } else {
+        fetchUsers();
+      }
+    } catch (error) {
+      setErrorMessage("Unable to filter users by role right now.");
     }
   };
 
   const filterUsersByName = async (name: string) => {
     setName(name);
-    if (name) {
-      const users = await client.findUsersByPartialName(name);
-      setUsers(users);
-    } else {
-      fetchUsers();
+    setErrorMessage("");
+    try {
+      if (name) {
+        const users = await client.findUsersByPartialName(name);
+        setUsers(users);
+      } else {
+        fetchUsers();
+      }
+    } catch (error) {
+      setErrorMessage("Unable to filter users by name right now.");
     }
   };
 
   const createUser = async () => {
-    const user = await client.createUser({
-      firstName: "New",
-      lastName: `User${users.length + 1}`,
-      username: `newuser${Date.now()}`,
-      password: "password123",
-      email: `email${users.length + 1}@neu.edu`,
-      section: "S101",
-      role: "STUDENT",
-    });
-    setUsers([...users, user]);
+    setErrorMessage("");
+    try {
+      const user = await client.createUser({
+        firstName: "New",
+        lastName: `User${users.length + 1}`,
+        username: `newuser${Date.now()}`,
+        password: "password123",
+        email: `email${users.length + 1}@neu.edu`,
+        section: "S101",
+        role: "STUDENT",
+      });
+      setUsers((previousUsers) => [...previousUsers, user]);
+    } catch (error) {
+      setErrorMessage("Unable to create user right now.");
+    }
+  };
+
+  const deleteUser = async (userId: string) => {
+    setErrorMessage("");
+    setUsers((previousUsers) => previousUsers.filter((user: any) => user._id !== userId));
+    try {
+      await client.deleteUser(userId);
+    } catch (error) {
+      setErrorMessage("Unable to delete user right now.");
+      fetchUsers();
+    }
   };
 
   useEffect(() => {
@@ -57,9 +88,10 @@ export default function Users() {
     <div>
       <button onClick={createUser} className="float-end btn btn-danger wd-add-people">
         <FaPlus className="me-2" />
-        Users
+        People
       </button>
       <h3>Users</h3>
+      {errorMessage && <div className="alert alert-danger py-2">{errorMessage}</div>}
       <div className="d-flex mb-3 gap-2">
         <input
           value={name}
@@ -79,7 +111,7 @@ export default function Users() {
           <option value="ADMIN">Administrators</option>
         </select>
       </div>
-      <PeopleTable users={users} fetchUsers={fetchUsers} />
+      <PeopleTable users={users} fetchUsers={fetchUsers} onDelete={deleteUser} />
     </div>
   );
 }

@@ -2,7 +2,11 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { setAssignments, updateAssignment as updateAssignmentAction } from "../reducer";
+import {
+  addAssignment as addAssignmentAction,
+  setAssignments,
+  updateAssignment as updateAssignmentAction,
+} from "../reducer";
 import { RootState } from "../../../../store";
 import * as client from "../client";
 
@@ -58,7 +62,8 @@ export default function AssignmentEditorPage() {
 
   const save = async () => {
     if (isNewAssignment) {
-      await client.createAssignment(cid, { ...formData, course: cid });
+      const createdAssignment = await client.createAssignment(cid, { ...formData, course: cid });
+      dispatch(addAssignmentAction(createdAssignment));
     } else {
       const updatedAssignment = await client.updateAssignment({
         ...formData,

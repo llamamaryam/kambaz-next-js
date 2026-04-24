@@ -1,7 +1,8 @@
 import axios from "axios";
+import { HTTP_SERVER } from "../../../../lib/http";
 
-const COURSES_API = "/api/courses";
-const ASSIGNMENTS_API = "/api/assignments";
+const COURSES_API = `${HTTP_SERVER}/api/courses`;
+const ASSIGNMENTS_API = `${HTTP_SERVER}/api/assignments`;
 
 export const findAssignmentsForCourse = async (courseId: string) => {
   const { data } = await axios.get(`${COURSES_API}/${courseId}/assignments`);

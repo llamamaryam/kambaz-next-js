@@ -17,27 +17,43 @@ export default function ModulesPage() {
   const { modules } = useSelector((state: RootState) => state.modulesReducer);
   const dispatch = useDispatch();
   const [moduleName, setModuleName] = useState("");
+  const [actionError, setActionError] = useState("");
 
   const fetchModules = async () => {
-    const modules = await client.findModulesForCourse(cid as string);
-    dispatch(setModules(modules));
+    try {
+      const modules = await client.findModulesForCourse(cid as string);
+      dispatch(setModules(modules));
+    } catch {
+      setActionError("Unable to load modules right now.");
+    }
   };
 
   useEffect(() => {
+    dispatch(setModules([]));
     fetchModules();
   }, [cid]);
 
   const onCreateModuleForCourse = async () => {
     if (!cid || !moduleName.trim()) return;
-    const newModule = { name: moduleName, course: cid };
-    const module = await client.createModuleForCourse(cid, newModule);
-    dispatch(setModules([...modules, module]));
-    setModuleName("");
+    try {
+      setActionError("");
+      const newModule = { name: moduleName.trim(), course: cid };
+      const module = await client.createModuleForCourse(cid, newModule);
+      dispatch(setModules([...modules, { ...module, lessons: module.lessons || [] }]));
+      setModuleName("");
+    } catch {
+      setActionError("Unable to create module right now.");
+    }
   };
 
   const onRemoveModule = async (moduleId: string) => {
-    await client.deleteModule(cid, moduleId);
-    dispatch(setModules(modules.filter((m: any) => m._id !== moduleId)));
+    try {
+      setActionError("");
+      await client.deleteModule(cid, moduleId);
+      dispatch(setModules(modules.filter((m: any) => m._id !== moduleId)));
+    } catch {
+      setActionError("Unable to delete module right now.");
+    }
   };
 
   const editModule = (moduleId: string) => {
@@ -49,9 +65,14 @@ export default function ModulesPage() {
   };
 
   const onUpdateModule = async (module: any) => {
-    await client.updateModule(cid, module);
-    const newModules = modules.map((m: any) => (m._id === module._id ? module : m));
-    dispatch(setModules(newModules));
+    try {
+      setActionError("");
+      await client.updateModule(cid, module);
+      const newModules = modules.map((m: any) => (m._id === module._id ? module : m));
+      dispatch(setModules(newModules));
+    } catch {
+      setActionError("Unable to update module right now.");
+    }
   };
 
   return (
@@ -61,6 +82,7 @@ export default function ModulesPage() {
         moduleName={moduleName}
         addModule={onCreateModuleForCourse}
       />
+      {actionError && <div className="alert alert-warning py-2">{actionError}</div>}
       <h3>Modules</h3>
       <ul className="list-group rounded-0">
         {modules.map((module) => (
@@ -86,7 +108,7 @@ export default function ModulesPage() {
               )}
             </div>
             <ul className="list-group rounded-0">
-              {module.lessons.map((lesson: any) => (
+              {(module.lessons || []).map((lesson: any) => (
                 <li key={lesson._id} className="list-group-item p-3 ps-1">
                   {lesson.name}
                 </li>

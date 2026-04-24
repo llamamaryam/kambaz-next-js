@@ -6,9 +6,11 @@ import PeopleDetails from "./Details";
 export default function PeopleTable({
   users = [],
   fetchUsers,
+  onDelete,
 }: {
   users?: any[];
   fetchUsers: () => void;
+  onDelete?: (userId: string) => Promise<void>;
 }) {
   const [showDetails, setShowDetails] = useState(false);
   const [showUserId, setShowUserId] = useState<string | null>(null);
@@ -33,6 +35,7 @@ export default function PeopleTable({
             <th>Role</th>
             <th>Last Activity</th>
             <th>Total Activity</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -57,6 +60,19 @@ export default function PeopleTable({
               <td className="wd-role">{user.role}</td>
               <td className="wd-last-activity">{user.lastActivity}</td>
               <td className="wd-total-activity">{user.totalActivity}</td>
+              <td>
+                <button
+                  className="btn btn-sm btn-danger"
+                  onClick={async () => {
+                    if (!onDelete) return;
+                    const confirmed = window.confirm("Delete this user?");
+                    if (!confirmed) return;
+                    await onDelete(user._id);
+                  }}
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

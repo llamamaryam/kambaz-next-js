@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setCourses } from "../courses/reducer";
@@ -15,7 +14,8 @@ export default function Dashboard() {
   const { currentUser } = useSelector((state: RootState) => state.accountReducer);
   const { enrollments } = useSelector((state: RootState) => state.enrollmentsReducer);
   const dispatch = useDispatch();
-  const [showAllCourses, setShowAllCourses] = useState(false);
+  const isFacultyOrAdmin = currentUser?.role === "FACULTY" || currentUser?.role === "ADMIN";
+  const [showAllCourses, setShowAllCourses] = useState(true);
   const [actionError, setActionError] = useState("");
   const [busyAction, setBusyAction] = useState<"add" | "update" | "enroll" | "unenroll" | "delete" | null>(null);
   const [busyCourseId, setBusyCourseId] = useState<string | null>(null);
@@ -36,20 +36,26 @@ export default function Dashboard() {
   const isEnrolled = (courseId: string) =>
     userEnrollments.some((enrollment: any) => enrollment.course === courseId);
 
+  const showEnrollmentButtons = !isFacultyOrAdmin && showAllCourses;
+
   const fetchCourses = async () => {
     try {
       const allCourses = await client.fetchAllCourses();
       dispatch(setCourses(allCourses));
     } catch (error) {
-      console.error(error);
+      setActionError("Unable to load courses right now.");
     }
   };
 
   useEffect(() => {
-    if (currentUser) {
-      fetchCourses();
-    }
+    fetchCourses();
   }, [currentUser]);
+
+  useEffect(() => {
+    if (isFacultyOrAdmin) {
+      setShowAllCourses(true);
+    }
+  }, [isFacultyOrAdmin]);
 
   const onAddNewCourse = async () => {
     if (!currentUser) {
@@ -160,9 +166,11 @@ export default function Dashboard() {
     }
   };
 
-  const visibleCourses = showAllCourses
+  const visibleCourses = isFacultyOrAdmin || showAllCourses
     ? courses
-    : courses.filter((c: any) => isEnrolled(c._id));
+    : currentUser
+      ? courses.filter((c: any) => isEnrolled(c._id))
+      : courses;
 
   return (
     <div className="p-4" id="wd-dashboard">
@@ -175,8 +183,9 @@ export default function Dashboard() {
           id="wd-dashboard-toggle-enrollments"
           disabled={busyAction !== null}
           onClick={() => setShowAllCourses(!showAllCourses)}
+          style={{ display: isFacultyOrAdmin ? "none" : undefined }}
         >
-          Enrollments
+          {showAllCourses ? "My Courses" : "All Courses"}
         </button>
         <button
           className="btn btn-secondary float-end me-2"
@@ -222,30 +231,12 @@ export default function Dashboard() {
               style={{ width: "300px" }}
             >
               <div className="card h-100">
-                <Link
-                  href={`/courses/${course._id}/home`}
-                  className="wd-dashboard-course-link text-decoration-none text-dark"
-                  onClick={(event) => {
-                    if (!isEnrolled(course._id)) {
-                      event.preventDefault();
-                    }
-                  }}
-                >
-                  <Image
-                    src={course.image || "/images/react.jpg"}
-                    className="card-img-top"
-                    alt={course.name}
-                    width={300}
-                    height={160}
-                    style={{ objectFit: "cover", width: "100%" }}
-                  />
-                </Link>
                 <div className="card-body">
                   <Link
                     href={`/courses/${course._id}/home`}
                     className="wd-dashboard-course-link text-decoration-none text-dark"
                     onClick={(event) => {
-                      if (!isEnrolled(course._id)) {
+                      if (!isFacultyOrAdmin && !isEnrolled(course._id)) {
                         event.preventDefault();
                       }
                     }}
@@ -262,37 +253,41 @@ export default function Dashboard() {
                     >
                       {course.description}
                     </p>
+                    <div className="small text-muted mb-3">
+                      {course.number || "Course"}
+                    </div>
                   </Link>
                   <Link
                     href={`/courses/${course._id}/home`}
                     className="btn btn-primary"
                     onClick={(event) => {
-                      if (!isEnrolled(course._id)) {
+                      if (!isFacultyOrAdmin && !isEnrolled(course._id)) {
                         event.preventDefault();
                       }
                     }}
                   >
                     Go
                   </Link>
-                  {isEnrolled(course._id) ? (
-                    <button
-                      className="btn btn-danger me-2 float-end"
-                      id="wd-unenroll-course-click"
-                      disabled={busyAction !== null}
-                      onClick={() => onUnenrollFromCourse(course._id)}
-                    >
-                      {busyAction === "unenroll" && busyCourseId === course._id ? "Unenrolling..." : "Unenroll"}
-                    </button>
-                  ) : (
-                    <button
-                      className="btn btn-success me-2 float-end"
-                      id="wd-enroll-course-click"
-                      disabled={busyAction !== null}
-                      onClick={() => onEnrollInCourse(course._id)}
-                    >
-                      {busyAction === "enroll" && busyCourseId === course._id ? "Enrolling..." : "Enroll"}
-                    </button>
-                  )}
+                  {showEnrollmentButtons &&
+                    (isEnrolled(course._id) ? (
+                      <button
+                        className="btn btn-danger me-2 float-end"
+                        id="wd-unenroll-course-click"
+                        disabled={busyAction !== null}
+                        onClick={() => onUnenrollFromCourse(course._id)}
+                      >
+                        {busyAction === "unenroll" && busyCourseId === course._id ? "Unenrolling..." : "Unenroll"}
+                      </button>
+                    ) : (
+                      <button
+                        className="btn btn-success me-2 float-end"
+                        id="wd-enroll-course-click"
+                        disabled={busyAction !== null}
+                        onClick={() => onEnrollInCourse(course._id)}
+                      >
+                        {busyAction === "enroll" && busyCourseId === course._id ? "Enrolling..." : "Enroll"}
+                      </button>
+                    ))}
                   <button
                     id="wd-edit-course-click"
                     disabled={busyAction !== null}
